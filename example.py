@@ -2,37 +2,24 @@ import YABFD as BF
 
 ###realm function example
 #classes are easier to work with because they can share values in/out easier
-class ExampleCustomRealmFunc:
-	def __init__(self):
-		self.value=0
-	def set(self,realms: list[list], realmptr: int, ptr: int):
-		self.value=realms[realmptr]['cells'][ptr]['v']
-#instantiate
-t=ExampleCustomRealmFunc()
-
-#generate a memory space with 5 cells
-testspace = BF.util.generateMemSpace(5)
-#make the realm function be the custom classes set function
-testspace['func'] = t.set
-
-#add 3 to the first cell copy the value to the class
+#add 3 to the first then print the value
 #then add 2 more afterwards to show that they are seperate values
 mem = BF.evaluate(
 		'+++_++',
-		realms=[testspace]
+		realms=[BF.util.generateMemSpace(5)]
 	)
 #print some extra information
 print("memory output:")
 print(BF.util.memToList(mem))
-print(t.value)
-del t
 del mem
 
 ###realm switching + linking example
 #increment cell value to 1
-#then open a portal and increment the value by 2
+#then open a portal
+#put the value of the current realm into the cell
+#add 2
 mem = BF.evaluate(
-	'+@++',
+	'+@|++',
 	realms=[BF.util.generateMemSpace(5),BF.util.generateMemSpace(5)]
 )
 print("memory output:")
@@ -62,7 +49,7 @@ del recov
 # this example will print "aaa" if you input "a" but it will echo back your input once if it is not a "a"
 print("IF example:")
 mem = BF.evaluate(
-	'+[-[---<]>>-]<->,{=...}(.)',
+	'+[-[---<]>>-]<-[-<<+>>]<,{=......}(.)',
 	realms=[BF.util.generateMemSpace(5)]
 )
 print(BF.util.memToList(mem))
