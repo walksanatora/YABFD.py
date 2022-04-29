@@ -21,21 +21,22 @@ def execute(filename: str):
 def evaluate(code: str, **kwargs: dict) -> list[list[dict]]:
     code = cleanup(list(code))
 
+    #generate links for the pairs of brackets,braces,parenthesis
     bracemap = buildbracemap(code)
     curlymap = buildcurlymap(code)
     parmap = buildparmap(code)
     
-    try:
-        realms = kwargs["realms"]
-    except KeyError as e:
-        realms = [generateMemSpace(255)]
-
-    codeptr = 0
+    #set to a default value if argument not provided
+    realms = [generateMemSpace(255)] if not 'realms' in kwargs.keys() else kwargs['realms']
+    codeptr = 0 if not 'codeptr' in kwargs.keys() else kwargs['codeptr']
     cellptr = 0 if not 'cellptr' in kwargs.keys() else kwargs['cellptr']
     realmptr = 0 if not 'realmptr' in kwargs.keys() else kwargs['realmptr']
     cells = realms[realmptr]['cells']
+
     ptrvalue=0
     ptrlocation=False
+    
+    printedChar=False
 
     while codeptr < len(code):
         command = code[codeptr]
@@ -46,7 +47,7 @@ def evaluate(code: str, **kwargs: dict) -> list[list[dict]]:
                     cellptr = 0
 
             case "<":
-                cellptr = len(cells) if cellptr <= 0 else cellptr - 1
+                cellptr = len(cells)-1 if cellptr <= 0 else cellptr - 1
 
             case "+":
                 if cells[cellptr]["t"] == "i":
@@ -80,7 +81,7 @@ def evaluate(code: str, **kwargs: dict) -> list[list[dict]]:
 
             case "[":
                 if cells[cellptr]["t"] == "i":
-                    if cells[cellptr]["v"] != 0:
+                    if cells[cellptr]["v"] == 0:
                         codeptr = bracemap[codeptr]
                 else:  # really cursed one liner to get a cell from another realm
                     if (
@@ -113,9 +114,9 @@ def evaluate(code: str, **kwargs: dict) -> list[list[dict]]:
                             ]
                         )
                     )
+                printedChar=True
 
             case ",":
-                print('getch',cellptr)
                 if cells[cellptr]["t"] == "i":
                     cells[cellptr]["v"] = ord(getch.getch())
                 else:
@@ -229,9 +230,11 @@ def evaluate(code: str, **kwargs: dict) -> list[list[dict]]:
             case "}":
                 if code[codeptr+1] == '(':
                     codeptr=parmap[codeptr+1]
+
             case "*":
                 ptrvalue=[realmptr,cellptr]
                 ptrlocation=True
+
             case "%":
                 ptrvalue=0
                 if cells[cellptr]["t"] == "i":
@@ -241,6 +244,7 @@ def evaluate(code: str, **kwargs: dict) -> list[list[dict]]:
                         cells[cellptr]["c"]
                     ]["v"]
                 ptrlocation=False
+
             case "$":
                 if ptrlocation:
                     cells[cellptr]["t"] = 'l'
@@ -249,13 +253,14 @@ def evaluate(code: str, **kwargs: dict) -> list[list[dict]]:
                 else:
                     cells[cellptr]['t'] = 'i'
                     cells[cellptr]['v'] = ptrvalue
+
             case '^':
                 if cells[cellptr]['t'] == 'l':
                     cells[cellptr]['v'] = realms[cells[cellptr]["r"]]["cells"][cells[cellptr]["c"]]["v"]
-                    cells[cellptr]['t'] == 'i'
-            
-                
+                    cells[cellptr]['t'] = 'i'
+        
         codeptr += 1
+    if printedChar:print('')
     return realms
 
 
