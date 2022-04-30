@@ -1,6 +1,10 @@
 # Yet Another BrainFuck Derivitive
 (AKA Embedable BrainFuck)
 
+# Thanks
+this github repo [https://github.com/pocmo/Python-Brainfuck](https://github.com/pocmo/Python-Brainfuck)<br>
+for having a good implentation of brainfuck in python which i modified to make this (also modified getch to be a single class)
+
 # What is this Brainfuck Intepreter
 well . . . it is a slightly modified version of brainfuck supporting
 * If/If-Else statments
