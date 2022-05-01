@@ -11,7 +11,12 @@ elif exists(sys.argv[1]):
 		with open(sys.argv[1],'r') as f:
 			data = f.read()
 			executor.setup(data)
-			executor.evaluate()
+			while executor.codeptr < len(executor.code):
+				print(f"""\ncode: {executor.code}
+{"".join([" "for _ in range(executor.codeptr+6)])}^
+l:{executor.cellptr} v:{executor.cells[executor.cellptr]['v']} p: {executor.ptrvalue}
+""")
+				executor.step()
 	except BaseException as e:
 		import traceback
 		traceback.print_exc()
@@ -21,7 +26,6 @@ instruction: {executor.code[executor.codeptr]}
 codeptr: {executor.codeptr}
 cellptr: {executor.cellptr}
 cell: {executor.cells[executor.cellptr]['v']}
-cells: {YABFD.util.memToList(executor.realms)[executor.realmptr]}
 maps:\tbrace: {executor.bracemap}
 \tcurly: {executor.curlymap}
 \tpar: {executor.parmap}
