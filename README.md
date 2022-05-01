@@ -1,6 +1,9 @@
 # Yet Another BrainFuck Derivitive
 (AKA Embedable BrainFuck)
 
+# Esolangs wiki
+you can view the esolangs wiki page [here](https://esolangs.org/wiki/YABFD)
+
 # Thanks
 this github repo [https://github.com/pocmo/Python-Brainfuck](https://github.com/pocmo/Python-Brainfuck)<br>
 for having a good implentation of brainfuck in python which i modified to make this (also modified getch to be a single class)

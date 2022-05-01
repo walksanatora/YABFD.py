@@ -46,10 +46,10 @@ class Brainfuck:
                             self.cells[self.cellptr]["v"] + 1 if self.cells[self.cellptr]["v"] < 255 else 0
                         )
                     else:
-                        self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]]["v"] = (
-                            self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]]["v"]
+                        self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]]["v"] = (
+                            self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]]["v"]
                             + 1
-                            if self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]][
+                            if self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]][
                                 "v"
                             ]
                             < 255
@@ -61,10 +61,10 @@ class Brainfuck:
                             self.cells[self.cellptr]["v"] - 1 if self.cells[self.cellptr]["v"] > 0 else 255
                         )
                     else:
-                        self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]]["v"] = (
-                            self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]]["v"]
+                        self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]]["v"] = (
+                            self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]]["v"]
                             - 1
-                            if self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]][
+                            if self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]][
                                 "v"
                             ]
                             > 0
@@ -77,7 +77,7 @@ class Brainfuck:
 
                     else:  # really cursed one liner to get a cell from another realm
                         if (
-                            self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]][
+                            self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]][
                                 "v"
                             ]
                             != 0
@@ -90,7 +90,7 @@ class Brainfuck:
                             self.codeptr = self.bracemap[self.codeptr]
                     else:
                         if (
-                            self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]]["v"]
+                            self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]]["v"]
                             != 0
                         ):
                             self.codeptr = self.bracemap[self.codeptr]
@@ -101,18 +101,18 @@ class Brainfuck:
                     else:
                         self.printChar(
                             chr(
-                                self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]][
+                                self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]][
                                     "v"
                                 ]
                             )
                         )
-                    printedChar=True
+                    self.printedChar=True
 
                 case ",":
                     if self.cells[self.cellptr]["t"] == "i":
                         self.cells[self.cellptr]["v"] = self.getChar()
                     else:
-                        self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]][
+                        self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]][
                             "v"
                         ] = self.getChar()
 
@@ -120,7 +120,7 @@ class Brainfuck:
                     if self.cells[self.cellptr]["t"] == "i":
                         self.cells[self.cellptr]["v"] = self.realmptr
                     else:
-                        self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]][
+                        self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]][
                             "v"
                         ] = self.realmptr
 
@@ -129,7 +129,7 @@ class Brainfuck:
                     if self.cells[self.cellptr]["t"] == "i":
                         realmtgt = self.cells[self.cellptr]["v"]
                     else:
-                        realmtgt = self.realms[self.cells[self.cellptr]["r"]]["cells"][
+                        realmtgt = self.realms[self.cells[self.cellptr]["r"]].cells[
                             self.cells[self.cellptr]["c"]
                         ]["v"] = self.realmptr
                     try:
@@ -156,7 +156,7 @@ class Brainfuck:
                                     skip=False
                             else:  # really cursed one liner to get a cell from another realm
                                 if (
-                                self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]][
+                                self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]][
                                     "v"
                                 ]
                                 == 0
@@ -168,7 +168,7 @@ class Brainfuck:
                                     skip=False
                             else:  # really cursed one liner to get a cell from another realm
                                 if (
-                                self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]][
+                                self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]][
                                     "v"
                                 ]
                                 == self.realmptr
@@ -183,11 +183,11 @@ class Brainfuck:
                             if self.cells[self.cellptr-1]["t"] == "i":
                                 left=self.cells[self.cellptr-1]["v"]
                             else:
-                                left=self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]-1]["v"]
+                                left=self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]-1]["v"]
                             if self.cells[self.cellptr-1]["t"] == "i":
                                 right=self.cells[self.cellptr]["v"]
                             else:
-                                right=self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]]["v"]
+                                right=self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]]["v"]
                             if left==right:
                                 skip=False
                         case '<':
@@ -196,11 +196,11 @@ class Brainfuck:
                             if self.cells[self.cellptr-1]["t"] == "i":
                                 left=self.cells[self.cellptr-1]["v"]
                             else:
-                                left=self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]-1]["v"]
+                                left=self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]-1]["v"]
                             if self.cells[self.cellptr-1]["t"] == "i":
                                 right=self.cells[self.cellptr]["v"]
                             else:
-                                right=self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]]["v"]
+                                right=self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]]["v"]
                             if left<right:
                                 skip=False
                         case '>':
@@ -209,11 +209,11 @@ class Brainfuck:
                             if self.cells[self.cellptr-1]["t"] == "i":
                                 left=self.cells[self.cellptr-1]["v"]
                             else:
-                                left=self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]-1]["v"]
+                                left=self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]-1]["v"]
                             if self.cells[self.cellptr-1]["t"] == "i":
                                 right=self.cells[self.cellptr]["v"]
                             else:
-                                right=self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]]["v"]
+                                right=self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]]["v"]
                             if left>right:
                                 skip=False
                     if skip:
@@ -224,14 +224,14 @@ class Brainfuck:
                         self.codeptr=self.parmap[self.codeptr+1]
 
                 case "*":
-                    ptrvalue=[self.realmptr,self.cellptr]
-                    ptrlocation=True
+                    self.ptrvalue=[self.realmptr,self.cellptr]
+                    self.ptrlocation=True
 
                 case "%":
                     if self.cells[self.cellptr]["t"] == "i":
                         self.ptrvalue = self.cells[self.cellptr]["v"]
                     else:
-                        self.ptrvalue = self.realms[self.cells[self.cellptr]["r"]]["cells"][
+                        self.ptrvalue = self.realms[self.cells[self.cellptr]["r"]].cells[
                             self.cells[self.cellptr]["c"]
                         ]["v"]
                     self.ptrlocation=False
@@ -247,7 +247,7 @@ class Brainfuck:
 
                 case '^':
                     if self.cells[self.cellptr]['t'] == 'l':
-                        self.cells[self.cellptr]['v'] = self.realms[self.cells[self.cellptr]["r"]]["cells"][self.cells[self.cellptr]["c"]]["v"]
+                        self.cells[self.cellptr]['v'] = self.realms[self.cells[self.cellptr]["r"]].cells[self.cells[self.cellptr]["c"]]["v"]
                         self.cells[self.cellptr]['t'] = 'i'
 
     def setup(self,code:str, **kwargs: dict):

@@ -1,13 +1,7 @@
 from .classes import Realm
 
-def DoNothing(realms: list[list], realmptr: int, ptr: int):
-    return
-
-def PrintInt(realms: list[list],realmptr: int, ptr:int):
-	print(realms[realmptr]['cells'][ptr]['v'])
-
 def generateMemSpace(cells: int = 255) -> list[dict]:
-    return Realm([{'t':'i','v':0} for _ in range(255)])
+    return Realm([{'t':'i','v':0} for _ in range(cells)])
 
 
 def listToMem(l:list[list]):
